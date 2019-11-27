@@ -1,70 +1,74 @@
-# Project 6: Brevet time calculator service
+# Project 5: Brevet time calculator with Ajax and MongoDB
 
-Simple listing service from project 5 stored in MongoDB database.
+Reimplement the RUSA ACP controle time calculator with flask, ajax, and mongoDB.
 
-## What is in this repository
+Credits to Michal Young for the initial version of this code.
 
-You have a minimal implementation of Docker compose in DockerRestAPI folder, using which you can create REST API-based services (as demonstrated in class). 
+## ACP controle times
 
-## Recap 
+That's "controle" with an 'e', because it's French, although "control" is also accepted. Controls are points where a rider must obtain proof of passage, and control[e] times are the minimum and maximum times by which the rider must arrive at the location.   
 
-You will reuse *your* code from project 5 (https://bitbucket.org/UOCIS322/proj5-mongo). Recall: you created the following functionalities. 1) Two buttons ("Submit") and ("Display") in the page where you have controle times. 2) On clicking the Submit button, the control times were be entered into the database. 3) On clicking the Display button, the entries from the database were be displayed in a new page. You also handled error cases appropriately. 
+The algorithm for calculating controle times is described here (https://rusa.org/pages/acp-brevet-control-times-calculator). Additional background information is given here (https://rusa.org/pages/rulesForRiders). The description is ambiguous, but the examples help. Part of finishing this project is clarifying anything that is not clear about the requirements, and documenting it clearly.  
 
-## Functionality you will add
+We are essentially replacing the calculator here (https://rusa.org/octime_acp.html). We can also use that calculator to clarify requirements and develop test data.  
 
-This project has following four parts. Change the values for host and port according to your machine, and use the web browser to check the results.
+## AJAX, Flask, and mongoDB reimplementation with restful links and API
 
-* You will design RESTful service to expose what is stored in MongoDB. Specifically, you'll use the boilerplate given in DockerRestAPI folder, and create the following three basic APIs:
-    * "http://<host:port>/listAll" should return all open and close times in the database
-    * "http://<host:port>/listOpenOnly" should return open times only
-    * "http://<host:port>/listCloseOnly" should return close times only
+The RUSA controle time calculator is a Perl script that takes an HTML form and emits a text page in the above link. 
 
-* You will also design two different representations: one in csv and one in json. For the above, JSON should be your default representation for the above three basic APIs. 
-    * "http://<host:port>/listAll/csv" should return all open and close times in CSV format
-    * "http://<host:port>/listOpenOnly/csv" should return open times only in CSV format
-    * "http://<host:port>/listCloseOnly/csv" should return close times only in CSV format
+This implementation  fills in the miles or km fields using Ajax and Flask and then puts the start and end times in a mongodb (data base).
+the time is placed in the data base by clicking the submit button
+to see all of the entries click the display button
+to clear all of the entries in the data base click the reset button
+if a letter or no entry is input an error apears in the notes section and the input will not be put in the data base
+if a brevet distance in more than 20% longer than the races total distance, the entry in not put in mongoDB and an error also apears in the notes section
+alerting the user to the issue.
+if the user clicks display but they haven't entered any times an error apears in the notes section describing the error
+If a user enters a negative distance it also alerts the user to the issue in the notes section
+to see the the start and end times click the display button 
+they appear in a decending order based on distance from start
 
-    * "http://<host:port>/listAll/json" should return all open and close times in JSON format
-    * "http://<host:port>/listOpenOnly/json" should return open times only in JSON format
-    * "http://<host:port>/listCloseOnly/json" should return close times only in JSON format
+* the logic in acp_times.py is based on the algorithm given above. 
+based off the brevet calucaltion rules given here https://rusa.org/pages/acp-brevet-control-times-calculator) I used the row that first defined what min and max speed for edge cases that are defined twice ie for brevet distance 200 i used 34 instead of 32 based on the origininal calcualtor
+I also made the last brevet close time for a 200 km 13.5 hours after the start based on randonneurs rules
 
-* You will also add a query parameter to get top "k" open and close times. For examples, see below.
+the restful architecture includes the following links:
+"http://<host:port>/listAll" should return all open and close times in the database
+"http://<host:port>/listOpenOnly" should return open times only
+"http://<host:port>/listCloseOnly" should return close times only
 
-    * "http://<host:port>/listOpenOnly/csv?top=3" should return top 3 open times only (in ascending order) in CSV format 
-    * "http://<host:port>/listOpenOnly/json?top=5" should return top 5 open times only (in ascending order) in JSON format
-    * "http://<host:port>/listCloseOnly/csv?top=6" should return top 5 close times only (in ascending order) in CSV format
-    * "http://<host:port>/listCloseOnly/json?top=4" should return top 4 close times only (in ascending order) in JSON format
+"http://<host:port>/listAll/csv" should return all open and close times in CSV format
+"http://<host:port>/listOpenOnly/csv" should return open times only in CSV format
+"http://<host:port>/listCloseOnly/csv" should return close times only in CSV format
 
-* You'll also design consumer programs (e.g., in jQuery) to use the service that you expose. "website" inside DockerRestAPI is an example of that. It is uses PHP. You're welcome to use either PHP or jQuery to consume your services. NOTE: your consumer program should be in a different container like example in DockerRestAPI.
+"http://<host:port>/listAll/json" should return all open and close times in JSON format
+"http://<host:port>/listOpenOnly/json" should return open times only in JSON format
+"http://<host:port>/listCloseOnly/json" should return close times only in JSON format
 
-## Tasks
+Also a query parameter to get top "k" open and close times in incluced. For examples, see below.
+"http://<host:port>/listOpenOnly/csv?top=3" should return top 3 open times only (in ascending order) in CSV format
+"http://<host:port>/listOpenOnly/json?top=5" should return top 5 open times only (in ascending order) in JSON format
+"http://<host:port>/listCloseOnly/csv?top=6" should return top 5 close times only (in ascending order) in CSV format
+"http://<host:port>/listCloseOnly/json?top=4" should return top 4 close times only (in ascending order) in JSON format
 
-You'll turn in your credentials.ini using which we will get the following:
+It also includes a consumer programs that uses the api service created by the original app. The consumer is in the website folder and it uses php. It runs on port 5000. It dispalyes the start and close times in two lists.
 
-* The working application with three parts.
+## Using this web app
+enter the proj6-rest folder and go the the folder DockerMongo (proj6-rest/DockerRestAPI)
+there is a run.sh shell file that starts the application included
+it can be run in a bash shel with the command
+$ ./run.sh
+it should run on port 5001, so you can access it at url localhost:5000 then you calculate all the times!
+to stop it in the shel it is running in press Ctrl + c to stop the container then to remove it enter the command
+the apacje php runs consumer app runs on port 5000
+$ ./stop.sh
 
-* Dockerfile
 
-* docker-compose.yml
+## Testing
 
-## Grading Rubric
+A suite of nose test cases is also included
+it tests the algorithium producing times
 
-* If your code works as expected: 100 points. This includes:
-    * Basic APIs work as expected.
-    * Representations work as expected.
-    * Query parameter-based APIs work as expected.
-    * Consumer program works as expected. 
 
-* For each non-working API, 5 points will be docked off. If none of them work,
-  you'll get 35 points assuming
-    * README is updated with your name and email ID.
-    * The credentials.ini is submitted with the correct URL of your repo.
-    * Dockerfile is present. 
-    * Docker-compose.yml works/builds without any errors.
 
-* If README is not updated, 5 points will be docked off. 
 
-* If the Docker-compose.yml doesn't build or is missing, 15 points will be
-  docked off. Same for Dockerfile as well.
-
-* If credentials.ini is missing, 0 will be assigned.

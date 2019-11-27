@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+
+   <!-- Our own style sheet -->
+   <link rel="stylesheet" href="/static/css/calc.css" /> 
+
+
+<h1>Here are your open and close times!</h1>
+  
+  {% for item in items %}
+    <h1> Location: {{ item.location }} at km {{ item.distance }}</h1>
+    <p> Open time: {{ item.opentime }} <p>
+    <p> close time: {{ item.closetime }} <p>
+    <p> <p>
+  {% endfor %}
+</body> </html>
