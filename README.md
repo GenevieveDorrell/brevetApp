@@ -1,4 +1,4 @@
-# Project 5: Brevet time calculator with Ajax and MongoDB
+# Project 6: Brevet time calculator with Ajax MongoDB, and api
 
 Reimplement the RUSA ACP controle time calculator with flask, ajax, and mongoDB.
 
@@ -44,12 +44,6 @@ the restful architecture includes the following links:
 "http://<host:port>/listAll/json" should return all open and close times in JSON format
 "http://<host:port>/listOpenOnly/json" should return open times only in JSON format
 "http://<host:port>/listCloseOnly/json" should return close times only in JSON format
-
-Also a query parameter to get top "k" open and close times in incluced. For examples, see below.
-"http://<host:port>/listOpenOnly/csv?top=3" should return top 3 open times only (in ascending order) in CSV format
-"http://<host:port>/listOpenOnly/json?top=5" should return top 5 open times only (in ascending order) in JSON format
-"http://<host:port>/listCloseOnly/csv?top=6" should return top 5 close times only (in ascending order) in CSV format
-"http://<host:port>/listCloseOnly/json?top=4" should return top 4 close times only (in ascending order) in JSON format
 
 It also includes a consumer programs that uses the api service created by the original app. The consumer is in the website folder and it uses php. It runs on port 5000. It dispalyes the start and close times in two lists.
 
