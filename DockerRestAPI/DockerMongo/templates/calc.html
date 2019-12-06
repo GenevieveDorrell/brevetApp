@@ -1,3 +1,8 @@
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+</form>
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
 <title>ACP Controle Times</title>
@@ -73,9 +78,8 @@
   <th> Miles </th>
   <th> Km </th>
   <th>Location</th>
-  <th>Notes</th>
      </tr>
-  
+  {% for row in range(20) %}
    <tr class="control">
      <!-- Dist (mi) -->
      <td><input name="miles" type="text" 
@@ -87,20 +91,8 @@
      <td><input name="location" type="text" 
        placeholder="Optional location name"
   size="20" /> </td>
-     <!--Notes (error messages for this row)-->
-     <td class="notes" color="red">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <!-- Mismatch, already found, etc. "flashed" from Python -->
-        {% for message in messages %}
-          <p style="color:red;" class="message">{{ message }}</p>
-        {% endfor %}
-        {% endif %}
-      {% endwith %}
-     </td> &nbsp; 
-     </td> 
    </tr>
-  
+   {% endfor %}
   </table>
   </div> <!-- col -->
   </div> <!-- row -->
@@ -163,14 +155,4 @@
 
 </div>
 </body> </html>
-<!--
-<form action="/new" method="POST">
-  <input type="text" name="name"></input>
-  <input type="text" name="description"></input>
-  <input type="submit"></input>
-</form>
-
-{% for item in items %}
-  <h1> {{ item.name }} </h1>
-  <p> {{ item.description }} <p>
-{% endfor %} -->
+{% endblock %}

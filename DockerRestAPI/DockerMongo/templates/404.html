@@ -1,10 +1,15 @@
 <html>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    </form>
+  <!-- Our own style sheet -->
+  <link rel="stylesheet" href="/static/css/calc.css" /> 
 <head>
   <title>Not here</title>
 </head>
 <body>
 <h1>Not here</h1>
   <p>These are not the bits you were looking for</p>
-<p>Maybe try <a href="{{ url_for("index") }}">the home page</a>?</p>
+<p>Maybe try <a href="{{ url_for("home") }}">the home page</a>?</p>
 </body>
 </html>

@@ -1,10 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<html> <head>
+<html> 
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    </form>
+  <head>
 
    <!-- Our own style sheet -->
    <link rel="stylesheet" href="/static/css/calc.css" /> 
-
-
 <h1>Here are your open and close times!</h1>
   
   {% for item in items %}
@@ -14,3 +18,4 @@
     <p> <p>
   {% endfor %}
 </body> </html>
+{% endblock %}

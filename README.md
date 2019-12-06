@@ -1,4 +1,4 @@
-# Project 6: Brevet time calculator with Ajax MongoDB, and api
+# Project 7: Brevet time calculator with Ajax MongoDB, api, and login security
 
 Reimplement the RUSA ACP controle time calculator with flask, ajax, and mongoDB.
 
@@ -45,16 +45,26 @@ the restful architecture includes the following links:
 "http://<host:port>/listOpenOnly/json" should return open times only in JSON format
 "http://<host:port>/listCloseOnly/json" should return close times only in JSON format
 
+http://<host:port>/listOpenOnly/csv?top=3" should return top 3 open times only (in ascending order) in CSV format
+
+** "http://<host:port>/listOpenOnly/json?top=5" should return top 5 open times only (in ascending order) in JSON format
+
 It also includes a consumer programs that uses the api service created by the original app. The consumer is in the website folder and it uses php. It runs on port 5000. It dispalyes the start and close times in two lists.
+It isn't acitve anymore becuase the api are now login ptotected
+
+## loging in and security 
+A login is required to access anything in the web aplication. To login simply hit the regiter buton or click the link at the top pf the page that says "register as a new user". afer entering a password and username you will be redirected to the login page where you can use that to login
+I used a mongo database to keep track of users. I also have the two new resources /api/token and /api/register.
+the first returns a valid token the second can be used to get the resource of any user in the system using thier id and the url /api/register/<userid>. All of the other previosly mentioned recorces are protected by login and token varifaction. Renember me functionality for if the user exits the tab is also implamented, but stops working when their token becomes invalid.  Flask CSRF protection is implamented as well.
+
 
 ## Using this web app
-enter the proj6-rest folder and go the the folder DockerMongo (proj6-rest/DockerRestAPI)
+enter the proj7-auth-ux folder and go the the folder DockerMongo (proj7-auth-ux/DockerRestAPI)
 there is a run.sh shell file that starts the application included
 it can be run in a bash shel with the command
 $ ./run.sh
-it should run on port 5001, so you can access it at url localhost:5000 then you calculate all the times!
-to stop it in the shel it is running in press Ctrl + c to stop the container then to remove it enter the command
-the apacje php runs consumer app runs on port 5000
+The aplication runs on localhost:5001 The consumer aplication from project 6 runs on port 5000 and it redirects you to a login becuase one is now required to access the data.
+To stop the web app in the shel it is running press Ctrl + c to stop the container then to remove it enter the command 
 $ ./stop.sh
 
 
